@@ -1,0 +1,34 @@
+class Solution {
+    public int characterReplacement(String s, int k) {
+        int[] seenChars = new int[26];
+        int left = 0;
+        int max = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+            char currentChar = s.charAt(right);
+            seenChars[currentChar - 'A']++;
+
+            while (getRequiredReplacements(seenChars) > k) {
+                char leftChar = s.charAt(left);
+                seenChars[leftChar - 'A']--;
+                left++;
+            }
+
+            max = Math.max(max, right - left + 1);
+        }
+
+
+        return max;
+    }
+
+    private int getRequiredReplacements(int[] seenChars) {
+        int sum = 0;
+        int max = 0;
+        for (int value: seenChars) {
+            max = Math.max(max, value);
+            sum += value;
+        }
+
+        return sum - max;
+    }
+}
